@@ -67,7 +67,7 @@ const loopOrderDetail = async (orderNo: string) => {
   <div class="recharge">
     <div class="recharge-icon iconfont icon-shandian" />
     <div class="recharge-count">
-      充值到{{ userInfo.mobile }}
+      充值到{{ userInfo?.mobile }}
     </div>
     <p class="tip">
       充值到个人账户
@@ -116,7 +116,7 @@ const loopOrderDetail = async (orderNo: string) => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 @mixin hover5Style {
   &:hover {
     color: #000;

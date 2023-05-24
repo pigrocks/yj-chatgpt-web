@@ -9,7 +9,7 @@ export function orderList(params: { accessKey: string; pageNo: number; pageSize:
 }
 
 export function accountInfo(params: { accessKey: string }) {
-  return http.get('/accountInfo', { params })
+  return http.get('/accountInfo', { params, headers: { Authorization: params.accessKey } })
 }
 
 export function wechatPay(params: { accessKey: string; osType: number; payAmount: number }) {
@@ -21,7 +21,9 @@ export function userCheckPhone(params: { phone: string }) {
 }
 
 export function userDoGetInfo(params: { accessKey: string }) {
-  return http.post('/user/doGetInfo', params)
+  const headers = { Authorization: params.accessKey }
+  console.log(headers)
+  return http.get('/user/doGetInfo', { params, headers })
 }
 
 export function userDoUpdateInfo(params: { accessKey: string; nickname: string; avatar: string }) {

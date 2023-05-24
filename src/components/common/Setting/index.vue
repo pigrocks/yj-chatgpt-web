@@ -10,6 +10,9 @@ import Mail from './Mail.vue'
 import Audit from './Audit.vue'
 import User from './User.vue'
 import Key from './Keys.vue'
+import Recharge from '@/yingjin/components/Recharge.vue'
+import Account from '@/yingjin/components/Account.vue'
+import Orders from '@/yingjin/components/Orders.vue'
 import { SvgIcon } from '@/components/common'
 import { useAuthStore, useUserStore } from '@/store'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
@@ -75,6 +78,37 @@ const show = computed({
             <Statistics />
           </div>
         </NTabPane>
+
+        <NTabPane name="Recharge" tab="Recharge">
+          <template #tab>
+            <SvgIcon class="text-lg" icon="ri:bar-chart-box-line" />
+            <span class="ml-2">充值</span>
+          </template>
+          <div class="min-h-[100px]">
+            <Recharge />
+          </div>
+        </NTabPane>
+
+        <NTabPane name="Account" tab="Account">
+          <template #tab>
+            <SvgIcon class="text-lg" icon="ri:bar-chart-box-line" />
+            <span class="ml-2">账户信息</span>
+          </template>
+          <div class="min-h-[100px]">
+            <Account />
+          </div>
+        </NTabPane>
+
+        <NTabPane name="Account" tab="Account">
+          <template #tab>
+            <SvgIcon class="text-lg" icon="ri:bar-chart-box-line" />
+            <span class="ml-2">充值记录</span>
+          </template>
+          <div class="min-h-[100px]">
+            <Orders />
+          </div>
+        </NTabPane>
+
         <NTabPane v-if="userStore.userInfo.root" name="Config" tab="Config">
           <template #tab>
             <SvgIcon class="text-lg" icon="ri:list-settings-line" />
