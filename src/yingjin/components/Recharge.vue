@@ -1,44 +1,8 @@
-<template>
-  <div class="recharge">
-    <div class="recharge-icon iconfont icon-shandian"></div>
-    <div class="recharge-count">充值到{{ userInfo.mobile }}</div>
-    <p class="tip">充值到个人账户</p>
-    <div class="charge-box">
-      <div class="left">
-        <div></div>
-        <h1 class="mbm">MBM OpenAI GPT 服务</h1>
-        <div class="slogan-logo">
-          <div class="slogan">安全、可靠、企业级</div>
-          <div class="line"></div>
-          <img class="logo" src="../../assets/images/blue-logo.png" alt="" />
-        </div>
-      </div>
-      <div class="right">
-        <div class="compute" :style="{'text-align': paying? 'center' : 'left'}">
-          <span class="d">充值:</span>
-          {{ !paying ? '到账按人民币兑美元汇率' : `${model || list[selectIndex]}元人民币` }}
-        </div>
-        <ul class="money-list" v-if="!paying">
-          <li class="money-item" :class="{ 'select-money': selectIndex === index }" v-for="(item, index) in list" :key="item" @click="selectMoney(item, index)">{{ item }}元</li>
-          <li class="ipt-money">
-            <input max="99999" v-model="model" class="self-money" type="number" placeholder="自定义充值" @focus="showYuan(true)" @blur="showYuan(!!model)" @input="input" />
-            <div v-if="showUnit" class="yuan">元</div>
-          </li>
-        </ul>
-        <div class="weChat-pay-code">
-          <img v-if="qrCodeImgUrl" class="code" :src="qrCodeImgUrl" alt="" />
-          <div class="icon-weChat">微信支付</div>
-          <div class="do-pay" @click="onPay" v-if="!paying">确认支付</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
 <script lang="ts" setup>
 import QRCode from 'qrcode'
-import { onBeforeMount, ref, onUnmounted } from 'vue'
-import { wechatPay, orderDetail } from '@/yingjin/api'
+import { onBeforeMount, onUnmounted, ref } from 'vue'
 import { useMessage } from 'naive-ui'
+import { orderDetail, wechatPay } from '@/yingjin/api'
 const selectIndex = ref(10)
 const showUnit = ref(false)
 const model = ref<any>()
@@ -49,10 +13,9 @@ const timer = ref()
 const paying = ref(false)
 const message = useMessage()
 onBeforeMount(() => {
-  let usr = localStorage.getItem('userInfo')
-  if (usr) {
+  const usr = localStorage.getItem('userInfo')
+  if (usr)
     userInfo.value = JSON.parse(usr)
-  }
 })
 onUnmounted(() => {
   clearTimeout(timer.value)
@@ -64,16 +27,17 @@ const selectMoney = (item: number, index: number) => {
   message.success(`您已经选择了充值金额 ${item} 元人民币`)
 }
 const input = () => {
-  if (parseInt(model.value) > 999999) model.value = '999999'
+  if (parseInt(model.value) > 999999)
+    model.value = '999999'
 }
 const showYuan = (flag: boolean) => {
   showUnit.value = flag
 }
 const onPay = async () => {
-  let money = model.value || list[selectIndex.value]
+  const money = model.value || list[selectIndex.value]
   paying.value = true
   console.log(money, userInfo)
-  const img = await wechatPay({accessKey: userInfo.value.accessKey, osType: 1, payAmount: +money})
+  const img = await wechatPay({ accessKey: userInfo.value.accessKey, osType: 1, payAmount: +money })
   QRCode.toDataURL(img.data.data.codeUrl).then((res1: any) => {
     qrCodeImgUrl.value = res1
     setTimeout(() => {
@@ -82,21 +46,76 @@ const onPay = async () => {
   })
 }
 const loopOrderDetail = async (orderNo: string) => {
-  const orderResult = await orderDetail({orderNo, accessKey: userInfo.value.accessKey})
-  if(orderResult.data.data.payStatus === 1) {
+  const orderResult = await orderDetail({ orderNo, accessKey: userInfo.value.accessKey })
+  if (orderResult.data.data.payStatus === 1) {
     message.success('恭喜您，充值成功。5秒后，自动关闭本页面')
     clearTimeout(timer.value)
     timer.value = ''
     setTimeout(() => {
       window.close()
     }, 5000)
-  } else {
+  }
+  else {
     timer.value = setTimeout(() => {
       loopOrderDetail(orderNo)
     }, 3000)
   }
 }
 </script>
+
+<template>
+  <div class="recharge">
+    <div class="recharge-icon iconfont icon-shandian" />
+    <div class="recharge-count">
+      充值到{{ userInfo.mobile }}
+    </div>
+    <p class="tip">
+      充值到个人账户
+    </p>
+    <div class="charge-box">
+      <div class="left">
+        <div />
+        <h1 class="mbm">
+          MBM OpenAI GPT 服务
+        </h1>
+        <div class="slogan-logo">
+          <div class="slogan">
+            安全、可靠、企业级
+          </div>
+          <div class="line" />
+          <img class="logo" src="../../assets/images/blue-logo.png" alt="">
+        </div>
+      </div>
+      <div class="right">
+        <div class="compute" :style="{ 'text-align': paying ? 'center' : 'left' }">
+          <span class="d">充值:</span>
+          {{ !paying ? '到账按人民币兑美元汇率' : `${model || list[selectIndex]}元人民币` }}
+        </div>
+        <ul v-if="!paying" class="money-list">
+          <li v-for="(item, index) in list" :key="item" class="money-item" :class="{ 'select-money': selectIndex === index }" @click="selectMoney(item, index)">
+            {{ item }}元
+          </li>
+          <li class="ipt-money">
+            <input v-model="model" max="99999" class="self-money" type="number" placeholder="自定义充值" @focus="showYuan(true)" @blur="showYuan(!!model)" @input="input">
+            <div v-if="showUnit" class="yuan">
+              元
+            </div>
+          </li>
+        </ul>
+        <div class="weChat-pay-code">
+          <img v-if="qrCodeImgUrl" class="code" :src="qrCodeImgUrl" alt="">
+          <div class="icon-weChat">
+            微信支付
+          </div>
+          <div v-if="!paying" class="do-pay" @click="onPay">
+            确认支付
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
 <style lang="scss" scoped>
 @mixin hover5Style {
   &:hover {
