@@ -34,7 +34,7 @@ function doSendCode() {
   const api = (props.type === 'register' ? userDoRegisterCode : userDoSendCode)
   api({ phone: props.phone }).then((res) => {
     const { data: { code, msg } } = res
-    if (code === 12000) {
+    if (code !== 11000) {
       ms.error(msg)
       return
     }

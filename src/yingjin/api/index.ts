@@ -32,6 +32,10 @@ export function userDoLogout(params: { accessKey: string }) {
   return http.post('/user/doLogout', params)
 }
 
+export function userDoLogin(params: { phone: string; code: string; inviteCode?: string }) {
+  return http.post('/user/doLogin', params)
+}
+
 export function userDoRegisterCode(params: { phone: string }) {
   return http.post('/user/doRegisterCode', params)
 }
@@ -40,7 +44,7 @@ export function userDoSendCode(params: { phone: string }) {
   return http.post('/user/doSendCode', params)
 }
 
-export function userRegisterAccount(params: { phone: string; code: string }) {
+export function userRegisterAccount(params: { phone: string; code: string; name: string }) {
   return http.post('/user/registerAccount', params)
 }
 
