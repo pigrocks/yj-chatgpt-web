@@ -5,7 +5,7 @@ import { useRoute } from 'vue-router'
 import { useAuthStore, useUserStore } from '@/store'
 import defaultAvatar from '@/assets/avatar.jpg'
 import { isString } from '@/utils/is'
-import Permission from '@/views/chat/layout/Permission.vue'
+import Permission from '@/yingjin/components/Login.vue'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
 
 const route = useRoute()
