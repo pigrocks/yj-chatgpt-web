@@ -10,8 +10,11 @@ const auth = async (req, res, next) => {
     try {
       const token = req.header('Authorization').replace('Bearer ', '')
       const info = jwt.verify(token, config.siteConfig.loginSalt.trim())
+      globalThis.console.log('info', info)
       req.headers.userId = info.userId
+      globalThis.console.log(info.userId)
       const user = await getUserById(info.userId)
+      globalThis.console.log('user', user)
       if (user == null || user.status !== Status.Normal)
         throw new Error('用户不存在 | User does not exist.')
       else

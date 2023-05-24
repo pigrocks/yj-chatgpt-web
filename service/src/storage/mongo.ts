@@ -185,10 +185,10 @@ export async function createUserByPhone(phone, isRoot: boolean): Promise<UserInf
   const password = md5(new Date().toString()).slice(0, 16)
   const userInfo = new UserInfo(email, password)
   userInfo.name = phone
-  if (isRoot) {
-    userInfo.status = Status.Normal
+  userInfo.status = Status.Normal // 默认就是通过状态, 无论是不是管理员
+  if (isRoot)
     userInfo.roles = [UserRole.Admin]
-  }
+
   await userCol.insertOne(userInfo)
   return userInfo
 }

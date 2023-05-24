@@ -286,3 +286,18 @@ export function fetchUpsertApiKey<T = any>(keyConfig: KeyConfig) {
     data: keyConfig,
   })
 }
+
+// yingjin
+export function fetchUserLogin<T = any>(params: { phone: string; code: string }) {
+  return post<T>({
+    url: '/user-login',
+    data: params,
+  })
+}
+
+export function fetchUserRegister<T = any>(params: { phone: string; code: string }) {
+  return post<T>({
+    url: '/user-register',
+    data: params,
+  })
+}

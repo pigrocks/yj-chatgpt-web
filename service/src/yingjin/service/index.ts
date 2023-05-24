@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken'
-import { getCacheConfig } from './storage/config'
-import { UserRole } from './storage/model'
-import { createUserByPhone, getUser } from '@/storage/mongo'
-import { userDoLogin, userRegisterAccount } from '@/yingjin/api'
+import { userDoLogin, userRegisterAccount } from '../api'
+import { getCacheConfig } from '../../storage/config'
+import { UserRole } from '../../storage/model'
+import { createUserByPhone, getUser } from '../../storage/mongo'
 
 export async function userRegister(req, res) {
   const { phone, code, name } = req.body as { name; phone: string; code: string }
@@ -15,8 +15,9 @@ export async function userRegister(req, res) {
 
   try {
     const result = await userRegisterAccount({ phone, code, name })
-    const { data: { msg, code, data: dt } } = result
-    if (code !== 11000)
+    const { data: { msg, code: cd, data: dt } } = result
+    globalThis.console.log(result)
+    if (cd !== 11000)
       throw new Error(msg)
 
 	  await createUserByPhone(phone, isRoot)
@@ -32,11 +33,19 @@ export async function userLogin(req, res) {
   try {
     const config = await getCacheConfig()
     const apiResult = await userDoLogin({ phone, code })
-    const { data: { msg, code, data: dt } } = apiResult
-    if (code !== 11000)
+    const { data: { msg, code: cd, data: dt } } = apiResult
+    if (cd !== 11000)
       throw new Error(msg)
 
-    const user = await getUser(phone)
+    let user = await getUser(phone)
+
+    // 手机号本地不存在
+    if (!user) {
+  		const isRoot = phone.toLowerCase() === process.env.ROOT_USER
+      user = await createUserByPhone(phone, isRoot)
+    }
+
+    globalThis.console.log('user', user)
     const token = jwt.sign({
       name: user.name ? user.name : user.email,
       avatar: user.avatar,

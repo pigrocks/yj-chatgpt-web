@@ -4,7 +4,8 @@ import { NButton, NInput, NModal, NTabPane, NTabs, useMessage } from 'naive-ui'
 import { useRouter } from 'vue-router'
 import { useAuthStore, useUserStore } from '@/store'
 import SendCode from '@/yingjin/components/SendCode.vue'
-import { userDoLogin, userRegisterAccount } from '@/yingjin/api'
+// import { userDoLogin, userRegisterAccount } from '@/yingjin/api'
+import { fetchUserLogin as userDoLogin, fetchUserRegister as userRegisterAccount } from '@/api'
 
 interface Props {
   visible: boolean
@@ -55,15 +56,16 @@ async function handleLogin() {
       phone: phone.value,
       code: code.value,
     })
-    const { data: { code: cd, msg, data: dt } } = result
-    if (cd === 11000) {
-      await authStore.setToken(dt.token)
-      userStore.userInfo = { ...userStore.userInfo, name: dt.name }
-      ms.success(msg)
+    const { data, message, status } = result
+    globalThis.console.log('login ok', result)
+    if (status === 'Success') {
+      await authStore.setToken(data.token)
+      userStore.userInfo = { ...userStore.userInfo, name: phone.value }
+      ms.success(message as string)
       show.value = false
     }
     else {
-      throw new Error(msg)
+      throw new Error(message)
     }
   }
   catch (error: any) {
