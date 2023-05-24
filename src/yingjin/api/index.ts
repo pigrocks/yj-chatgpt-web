@@ -8,14 +8,6 @@ export function orderList(params: { accessKey: string; pageNo: number; pageSize:
   return http.get('/orderList', { params })
 }
 
-export function sendCode(params: { phone: string }) {
-  return http.post('/sendCode', params)
-}
-
-export function checkCode(params: { phone: string; code: string }) {
-  return http.post('/checkCode', params)
-}
-
 export function accountInfo(params: { accessKey: string }) {
   return http.get('/accountInfo', { params })
 }
@@ -38,6 +30,10 @@ export function userDoUpdateInfo(params: { accessKey: string; nickname: string; 
 
 export function userDoLogout(params: { accessKey: string }) {
   return http.post('/user/doLogout', params)
+}
+
+export function userDoRegisterCode(params: { phone: string }) {
+  return http.post('/user/doRegisterCode', params)
 }
 
 export function userDoSendCode(params: { phone: string }) {

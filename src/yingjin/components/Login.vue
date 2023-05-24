@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { computed, onMounted, ref } from 'vue'
-import { NButton, NForm, NInput, NModal, NTabPane, NTabs, useMessage } from 'naive-ui'
+import { NButton, NInput, NModal, NTabPane, NTabs, useMessage } from 'naive-ui'
 import { useRoute, useRouter } from 'vue-router'
 import { fetchLogin, fetchRegister, fetchResetPassword, fetchSendResetMail, fetchVerify, fetchVerifyAdmin } from '@/api'
 import { useAuthStore } from '@/store'
@@ -203,48 +203,38 @@ async function handleResetPassword() {
 
 <template>
   <NModal :show="visible" style="width: 90%; max-width: 440px">
-    <NForm>
-      <div class="p-10 bg-white rounded dark:bg-slate-800">
-        <div class="space-y-4">
-          <header class="space-y-2">
-            <h2 class="text-2xl font-bold text-center text-slate-800 dark:text-neutral-200">
-              {{ $t('common.notLoggedIn') }}
-            </h2>
-          </header>
+    <div class="p-10 bg-white rounded dark:bg-slate-800">
+      <div class="space-y-4">
+        <header class="space-y-2">
+          <h2 class="text-2xl font-bold text-center text-slate-800 dark:text-neutral-200">
+            {{ $t('common.notLoggedIn') }}
+          </h2>
+        </header>
 
-          <!-- Add Tabs -->
-          <NTabs v-model:value="activeTab" type="line">
-            <NTabPane name="login" :tab="$t('common.login')">
-              <NFormItem class="mb-2">
-                <NInput v-model:value="phone" placeholder="手机号" />
-              </NFormItem>
-              <div class="my-2" />
-              <NFormItem class="mb-2">
-                <SendCode v-model:value="code" :phone="phone" type="login" />
-              </NFormItem>
-              <div class="my-2" />
-              <NButton block type="primary" :disabled="disabled" :loading="loading" @click="handleLogin">
-                登录
-              </NButton>
-            </NTabPane>
+        <!-- Add Tabs -->
+        <NTabs v-model:value="activeTab" type="line">
+          <NTabPane name="login" :tab="$t('common.login')">
+            <NInput v-model:value="phone" placeholder="手机号" type="text" :max-length="11" />
+            <div class="my-2" />
+            <SendCode v-model:value="code" :phone="phone" type="login" />
+            <div class="my-2" />
+            <NButton block type="primary" :disabled="disabled" :loading="loading" @click="handleLogin">
+              登录
+            </NButton>
+          </NTabPane>
 
-            <NTabPane v-if="authStore.session && authStore.session.allowRegister" name="register" :tab="$t('common.register')">
-              <NFormItem class="mb-2">
-                <NInput v-model:value="phone" type="text" placeholder="手机号" />
-              </NFormItem>
-              <div class="my-2" />
-              <NFormItem class="mb-2">
-                <SendCode v-model:value="code" :phone="phone" type="register" />
-              </NFormItem>
-              <div class="my-2" />
-              <NButton block type="primary" :disabled="disabled || password !== confirmPassword" :loading="loading" @click="handleRegister">
-                注册
-              </NButton>
-            </NTabPane>
-          </NTabs>
-          <!-- End Tabs -->
-        </div>
+          <NTabPane v-if="authStore.session && authStore.session.allowRegister" name="register" :tab="$t('common.register')">
+            <NInput v-model:value="phone" type="text" placeholder="手机号" />
+            <div class="my-2" />
+            <SendCode v-model:value="code" :phone="phone" type="register" />
+            <div class="my-2" />
+            <NButton block type="primary" :disabled="disabled || password !== confirmPassword" :loading="loading" @click="handleRegister">
+              注册
+            </NButton>
+          </NTabPane>
+        </NTabs>
+        <!-- End Tabs -->
       </div>
-    </NForm>
+    </div>
   </NModal>
 </template>
