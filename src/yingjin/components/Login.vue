@@ -61,6 +61,7 @@ async function handleLogin() {
     if (status === 'Success') {
       await authStore.setToken(data.token)
       userStore.userInfo = { ...userStore.userInfo, name: phone.value }
+      localStorage.setItem('accessKey', data.accessKey)
       ms.success(message as string)
       show.value = false
     }
@@ -84,16 +85,18 @@ async function handleRegister() {
       code: code.value,
       name: name.value,
     })
+    console.log(result)
     const { data, message, status } = result
     if (status === 'Success') {
       await authStore.setToken(data.token)
       userStore.userInfo = { ...userStore.userInfo, name: phone.value }
+      localStorage.setItem('accessKey', data.accessKey)
       ms.success(message as string)
       show.value = false
     }
-    else { throw new Error(msg) }
+    else { throw new Error(message as string) }
 
-    ms.success(msg as string)
+    ms.success(message as string)
   }
   catch (error: any) {
     ms.error(error.message ?? 'error')

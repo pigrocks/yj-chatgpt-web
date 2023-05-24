@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { useAuthStore } from '@/store'
 
 const baseURL = import.meta.env.VITE_YINGJIN_API_URL
 const service = axios.create({
@@ -8,7 +7,8 @@ const service = axios.create({
 
 service.interceptors.request.use(
   (config) => {
-    const token = useAuthStore().token
+    // const token = useAuthStore().token
+    const token = localStorage.getItem('accessToken')
     if (token)
       config.headers.Authorization = `Bearer ${token}`
     return config

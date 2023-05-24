@@ -1,7 +1,6 @@
 import * as dotenv from 'dotenv'
 import 'isomorphic-fetch'
 import type { ChatGPTAPIOptions, ChatMessage, SendMessageOptions } from 'chatgpt'
-import { ChatGPTAPI, ChatGPTUnofficialProxyAPI } from 'chatgpt'
 import { SocksProxyAgent } from 'socks-proxy-agent'
 import httpsProxyAgent from 'https-proxy-agent'
 import fetch from 'node-fetch'
@@ -15,6 +14,7 @@ import { sendResponse } from '../utils'
 import { hasAnyRole, isNotEmptyString } from '../utils/is'
 import type { ChatContext, ChatGPTUnofficialProxyAPIOptions, JWT, ModelConfig } from '../types'
 import { getChatByMessageId } from '../storage/mongo'
+import { ChatGPTAPI, ChatGPTUnofficialProxyAPI } from '../../vendor/chatgpt/build/index'
 import type { RequestOptions } from './types'
 
 const { HttpsProxyAgent } = httpsProxyAgent
@@ -107,9 +107,11 @@ async function chatReplyProcess(options: RequestOptions) {
         options = { ...lastContext }
     }
     const api = await initApi(key, model)
+    console.log('api', api)
     const response = await api.sendMessage(message, {
       ...options,
       onProgress: (partialResponse) => {
+        console.log('progress', partialResponse)
         process?.(partialResponse)
       },
     })

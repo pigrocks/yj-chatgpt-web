@@ -412,6 +412,7 @@ router.post('/chat-process', [auth, limiter], async (req, res) => {
       message: prompt,
       lastContext: options,
       process: (chat: ChatMessage) => {
+        globalThis.console.log('process chat', chat)
         lastResponse = chat
         const chuck = {
           id: chat.id,
