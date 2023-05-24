@@ -227,6 +227,13 @@ export async function getUser(email: string): Promise<UserInfo> {
   return userInfo
 }
 
+// yingjin
+export async function getUserByPhone(phone: string): Promise<UserInfo> {
+  const userInfo = await userCol.findOne({ name: phone }) as UserInfo
+  initUserInfo(userInfo)
+  return userInfo
+}
+
 export async function getUsers(page: number, size: number): Promise<{ users: UserInfo[]; total: number }> {
   const cursor = userCol.find({ status: { $ne: Status.Deleted } }).sort({ createTime: -1 })
   const total = await cursor.count()

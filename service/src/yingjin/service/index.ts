@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import { userDoLogin, userRegisterAccount } from '../api'
 import { getCacheConfig } from '../../storage/config'
 import { UserRole } from '../../storage/model'
-import { createUserByPhone, getUser } from '../../storage/mongo'
+import { createUserByPhone, getUserByPhone } from '../../storage/mongo'
 
 export async function userRegister(req, res) {
   const { phone, code, name } = req.body as { name; phone: string; code: string }
@@ -10,8 +10,8 @@ export async function userRegister(req, res) {
   // 通过手机号码跟验证码请求远程api
   // username 就是手机号
 
-  if (getUser(phone))
-    return res.send({ status: 'Fail', message: '账号已存在 | The email exists', data: null })
+  if (getUserByPhone(phone))
+    return res.send({ status: 'Fail', message: '账号已存在 | The phone exists', data: null })
 
   try {
     const result = await userRegisterAccount({ phone, code, name })
@@ -37,7 +37,7 @@ export async function userLogin(req, res) {
     if (cd !== 11000)
       throw new Error(msg)
 
-    let user = await getUser(phone)
+    let user = await getUserByPhone(phone)
 
     // 手机号本地不存在
     if (!user) {
