@@ -46,6 +46,7 @@ import { hasAnyRole, isEmail, isNotEmptyString } from './utils/is'
 import { sendNoticeMail, sendResetPasswordMail, sendTestMail, sendVerifyMail, sendVerifyMailAdmin } from './utils/mail'
 import { checkUserResetPassword, checkUserVerify, checkUserVerifyAdmin, getUserResetPasswordUrl, getUserVerifyUrl, getUserVerifyUrlAdmin, md5 } from './utils/security'
 import { rootAuth } from './middleware/rootAuth'
+import { userRegister } from '@/yingjin/service'
 
 dotenv.config()
 
@@ -481,6 +482,7 @@ router.post('/chat-process', [auth, limiter], async (req, res) => {
   }
 })
 
+// 自己的注册方式
 router.post('/user-registr', async (req, res) => {
   return userRegister(req, res)
 })
@@ -614,6 +616,9 @@ router.post('/session', async (req, res) => {
     res.send({ status: 'Fail', message: error.message, data: null })
   }
 })
+
+// 自己的登录方式
+router.post('/user-login', userLogin)
 
 router.post('/user-login', async (req, res) => {
   try {
