@@ -30,6 +30,7 @@ export class UserInfo {
   updateTime?: string
   config?: UserConfig
   roles?: UserRole[]
+  accessKey?: string
   constructor(email: string, password: string) {
     this.name = email
     this.email = email

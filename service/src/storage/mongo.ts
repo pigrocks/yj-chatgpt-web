@@ -1,6 +1,7 @@
 import { MongoClient, ObjectId } from 'mongodb'
 import * as dotenv from 'dotenv'
 import dayjs from 'dayjs'
+import { md5 } from 'src/utils/security'
 import { ChatInfo, ChatRoom, ChatUsage, Status, UserConfig, UserInfo, UserRole } from './model'
 import type { CHATMODEL, ChatOptions, Config, KeyConfig, UsageResponse } from './model'
 
@@ -175,6 +176,21 @@ export async function deleteChat(roomId: number, uuid: number, inversion: boolea
     }
   }
   await chatCol.updateOne(query, update)
+}
+
+// aotianlong:
+export async function createUserByPhone(phone, isRoot: boolean): Promise<UserInfo> {
+  // 随机创建邮箱
+  const email = `${phone}@openai.yingjin.pro`
+  const password = md5(new Date().toString()).slice(0, 16)
+  const userInfo = new UserInfo(email, password)
+  userInfo.name = phone
+  if (isRoot) {
+    userInfo.status = Status.Normal
+    userInfo.roles = [UserRole.Admin]
+  }
+  await userCol.insertOne(userInfo)
+  return userInfo
 }
 
 export async function createUser(email: string, password: string, isRoot: boolean): Promise<UserInfo> {
