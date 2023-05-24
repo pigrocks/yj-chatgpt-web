@@ -404,7 +404,9 @@ router.post('/chat-process', [auth, limiter], async (req, res) => {
       ? await getChat(roomId, uuid)
       : await insertChat(uuid, prompt, roomId, options as ChatOptions)
     let firstChunk = true
+    globalThis.console.log('key', req.headers.accessKey)
     result = await chatReplyProcess({
+      key: req.headers.accessKey,
       message: prompt,
       lastContext: options,
       process: (chat: ChatMessage) => {

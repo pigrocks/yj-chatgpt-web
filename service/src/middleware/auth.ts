@@ -12,6 +12,7 @@ const auth = async (req, res, next) => {
       const info = jwt.verify(token, config.siteConfig.loginSalt.trim())
       globalThis.console.log('info', info)
       req.headers.userId = info.userId
+      req.headers.accessKey = info.accessKey // 把accesskey也放入到headers中
       globalThis.console.log(info.userId)
       const user = await getUserById(info.userId)
       globalThis.console.log('user', user)
