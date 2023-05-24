@@ -404,9 +404,11 @@ router.post('/chat-process', [auth, limiter], async (req, res) => {
       ? await getChat(roomId, uuid)
       : await insertChat(uuid, prompt, roomId, options as ChatOptions)
     let firstChunk = true
-    globalThis.console.log('key', req.headers.accessKey)
+    const randomKey = await getRandomApiKey(user, user.config.chatModel)
+    globalThis.console.log('key', req.headers.accessKey, randomKey)
+    randomKey.key = req.headers.accessKey
     result = await chatReplyProcess({
-      key: req.headers.accessKey,
+      key: randomKey,
       message: prompt,
       lastContext: options,
       process: (chat: ChatMessage) => {
@@ -433,7 +435,6 @@ router.post('/chat-process', [auth, limiter], async (req, res) => {
       temperature,
       top_p,
       chatModel: user.config.chatModel,
-      key: await getRandomApiKey(user, user.config.chatModel),
     })
     // return the whole response including usage
     res.write(`\n${JSON.stringify(result.data)}`)
