@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue'
 import { NButton, NInput, NModal, NTabPane, NTabs, useMessage } from 'naive-ui'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/store'
+import { useAuthStore, useUserStore } from '@/store'
 import SendCode from '@/yingjin/components/SendCode.vue'
 import { userDoLogin, userRegisterAccount } from '@/yingjin/api'
 
@@ -25,6 +25,7 @@ const show = computed({
 
 const router = useRouter()
 const authStore = useAuthStore()
+const userStore = useUserStore()
 
 const ms = useMessage()
 
@@ -57,9 +58,9 @@ async function handleLogin() {
     const { data: { code: cd, msg, data: dt } } = result
     if (cd === 11000) {
       await authStore.setToken(dt.token)
+      userStore.userInfo = { ...userStore.userInfo, name: dt.name }
       ms.success(msg)
       show.value = false
-      router.go(0)
     }
     else {
       throw new Error(msg)
@@ -85,6 +86,7 @@ async function handleRegister() {
     if (cd === 11000) {
       authStore.setToken(dt.token)
       show.value = false
+      userStore.userInfo = { ...userStore.userInfo, name: dt.name }
     }
     else { throw new Error(msg) }
 
