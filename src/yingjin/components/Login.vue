@@ -36,7 +36,7 @@ const sign = ref('')
 const phone = ref('')
 const code = ref('')
 
-const disabled = computed(() => !username.value.trim() || !password.value.trim() || loading.value)
+const disabled = computed(() => !code.value.trim() || !phone.value.trim() || loading.value)
 
 const activeTab = ref('login')
 

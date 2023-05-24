@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { NButton, NInput, NInputGroup, useMessage } from 'naive-ui'
 import { userDoRegisterCode, userDoSendCode } from '@/yingjin/api'
 
@@ -13,6 +13,7 @@ const props = defineProps({
     required: true,
   },
 })
+const emit = defineEmits(['update:value'])
 const ms = useMessage()
 const code = ref('')
 const countDown = ref(0)
@@ -48,6 +49,10 @@ function doSendCode() {
     sending.value = false
   })
 }
+
+watch(code, () => {
+  emit('update:value', code.value)
+}, { immediate: true, flush: 'sync' })
 </script>
 
 <template>
