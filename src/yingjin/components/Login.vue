@@ -65,7 +65,7 @@ async function handleLogin() {
       show.value = false
     }
     else {
-      throw new Error(message)
+      throw new Error(message as string)
     }
   }
   catch (error: any) {
@@ -84,11 +84,12 @@ async function handleRegister() {
       code: code.value,
       name: name.value,
     })
-    const { data: { msg, data: dt, code: cd } } = result
-    if (cd === 11000) {
-      authStore.setToken(dt.token)
+    const { data, message, status } = result
+    if (status === 'Success') {
+      await authStore.setToken(data.token)
+      userStore.userInfo = { ...userStore.userInfo, name: phone.value }
+      ms.success(message as string)
       show.value = false
-      userStore.userInfo = { ...userStore.userInfo, name: dt.name }
     }
     else { throw new Error(msg) }
 

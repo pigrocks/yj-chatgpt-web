@@ -9,9 +9,10 @@ export async function userRegister(req, res) {
   const isRoot = phone.toLowerCase() === process.env.ROOT_USER
   // 通过手机号码跟验证码请求远程api
   // username 就是手机号
-
-  if (getUserByPhone(phone))
-    return res.send({ status: 'Fail', message: '账号已存在 | The phone exists', data: null })
+  const userInfo = await getUserByPhone(phone)
+  globalThis.console.log('userInfo', userInfo)
+  if (userInfo)
+    return res.send({ status: 'Fail', message: `账号已存在 | ${phone} | The phone exists`, data: null })
 
   try {
     const result = await userRegisterAccount({ phone, code, name })
@@ -20,8 +21,21 @@ export async function userRegister(req, res) {
     if (cd !== 11000)
       throw new Error(msg)
 
-	  await createUserByPhone(phone, isRoot)
-	  res.send({ status: 'Success', message: '注册成功 | Register success', data: null })
+	  const user = await createUserByPhone(phone, isRoot)
+	  // res.send({ status: 'Success', message: '注册成功 | Register success', data: dt })
+
+    globalThis.console.log('user', user)
+    const config = await getCacheConfig()
+    const token = jwt.sign({
+      accessKey: dt.accessKey,
+      name: user.name ? user.name : user.email,
+      avatar: user.avatar,
+      description: user.description,
+      userId: user._id,
+      root: user.roles.includes(UserRole.Admin),
+      config: user.config,
+    }, config.siteConfig.loginSalt.trim())
+    res.send({ status: 'Success', message: '注册成功 | Register successfully', data: { token } })
   }
   catch (e) {
     res.send({ status: 'Fail', message: e.message, data: null })
@@ -47,6 +61,7 @@ export async function userLogin(req, res) {
 
     globalThis.console.log('user', user)
     const token = jwt.sign({
+      accessKey: dt.accessKey,
       name: user.name ? user.name : user.email,
       avatar: user.avatar,
       description: user.description,

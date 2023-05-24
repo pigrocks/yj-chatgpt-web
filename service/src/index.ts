@@ -483,7 +483,7 @@ router.post('/chat-process', [auth, limiter], async (req, res) => {
 })
 
 // 自己的注册方式
-router.post('/user-registr', userRegister)
+router.post('/user-register', userRegister)
 
 router.post('/user-register', async (req, res) => {
   try {

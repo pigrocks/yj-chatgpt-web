@@ -295,7 +295,7 @@ export function fetchUserLogin<T = any>(params: { phone: string; code: string })
   })
 }
 
-export function fetchUserRegister<T = any>(params: { phone: string; code: string }) {
+export function fetchUserRegister<T = any>(params: { name: string; phone: string; code: string }) {
   return post<T>({
     url: '/user-register',
     data: params,
