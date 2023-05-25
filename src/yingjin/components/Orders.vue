@@ -5,10 +5,10 @@ import { orderDetail, orderList } from '@/yingjin/api'
 
 const orders = ref([])
 const order = ref()
+const message = useMessage()
 
 function showDetail(id) {
   orderDetail({ id }).then((res) => {
-    const message = useMessage()
     console.log(res)
     const { data, msg, code, total } = res
     if (code === 11000)

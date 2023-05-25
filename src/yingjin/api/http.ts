@@ -7,13 +7,13 @@ const service = axios.create({
 
 service.interceptors.request.use(
   (config) => {
-    // const token = useAuthStore().token
+    const accessKey = localStorage.getItem('accessKey')
     const token = localStorage.getItem('accessToken')
-    // const accessKey = localStorage.getItem('accessKey')
-    if (token)
-      // config.headers.Authorization = `Bearer ${token}`
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
       config.headers.Authorization = `${token}`
-      // config.headers.Authorization = `${token}`
+      config.headers.accessKey = `${accessKey}`
+    }
 
     return config
   },

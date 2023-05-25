@@ -13,7 +13,7 @@ export function orderDetail(params: { orderNo: string; accessKey: string }) {
 }
 
 export function orderList(params: { accessKey: string; pageNo: number; pageSize: number; payWay: number }) {
-  return post('/orderList', params)
+  return get('/orderList', { params })
 }
 
 export function accountInfo(params: { accessKey: string }) {
