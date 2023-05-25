@@ -12,7 +12,7 @@ export function orderDetail(params: { orderNo: string; accessKey: string }) {
   return get('/orderDetail', { params })
 }
 
-export function orderList(params: { accessKey: string; pageNo: number; pageSize: number; payWay: number }) {
+export function orderList(params: { accessKey: string; pageNo: number; pageSize: number; payWay?: number }) {
   return get('/orderList', { params })
 }
 
