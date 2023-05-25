@@ -1,13 +1,15 @@
 <script lang='ts' setup>
-import { reactive, ref, watch } from 'vue'
-import { NDataTable, NDialog, NPagination, useMessage } from 'naive-ui'
-import { orderDetail, orderList } from '@/yingjin/api'
+import { h, reactive, ref, watch } from 'vue'
+import { NDataTable, NModal, NPagination, useMessage } from 'naive-ui'
+import { orderList } from '@/yingjin/api'
 
 const orders = ref([])
 const order = ref()
 const message = useMessage()
 const total = ref(0)
 const accessKey = localStorage.getItem('accessKey') as string
+
+const showModal = ref(false)
 
 const params = reactive({
   accessKey,
@@ -18,8 +20,12 @@ const params = reactive({
 
 watch(params, loadData, { immediate: true })
 
-function showDetail(id) {
-  orderDetail({ id }).then((res) => {
+function showDetail(o) {
+  order.value = o
+  showModal.value = true
+  // 发现数据是一样的，没必要再查询一次了
+  /*
+  orderDetail({ orderNo: order.orderNo, accessKey: order.accessKey }).then((res) => {
     console.log(res)
     const { data, msg, code, total } = res
     if (code === 11000)
@@ -27,6 +33,7 @@ function showDetail(id) {
     else
       message.error(msg)
   })
+	*/
 }
 
 function loadData() {
@@ -44,12 +51,12 @@ const columns = [
   {
     title: '订单号',
     key: 'orderNo',
-    width: '20%',
+    width: '21%',
   },
   {
     title: '支付时间',
     key: 'payTime',
-    width: '20%',
+    width: '15%',
   },
   {
     title: '金额',
@@ -57,7 +64,7 @@ const columns = [
     render(_, index) {
       return `${_.amount}美元/${_.payAmount}人民币`
     },
-    width: '20%',
+    width: '15%',
   },
   {
     title: '充值前',
@@ -65,7 +72,7 @@ const columns = [
     render(_, index) {
       return `${_.beforeAmount}美元`
     },
-    width: '13%',
+    width: '12%',
   },
   {
     title: '充值后',
@@ -73,7 +80,7 @@ const columns = [
     render(_, index) {
       return `${_.afterAmount}美元`
     },
-    width: '13%',
+    width: '12%',
   },
   {
     title: '支付场景',
@@ -81,7 +88,20 @@ const columns = [
     render(_, index) {
       return payWayHash[_.payWay]
     },
-    width: '14%',
+    width: '12%',
+  },
+  {
+    title: '操作',
+    key: 'action',
+    render(_, index) {
+      return h('div', [
+        h('a', {
+          onClick: () => showDetail(_),
+          class: 'cursor-pointer',
+        }, '详情'),
+      ])
+    },
+    width: '10%',
   },
 ]
 
@@ -103,7 +123,7 @@ const payWayHash = {
     />
   </div>
 
-  <NDialog v-if="!!order" title="订单详情">
+  <NModal v-model:show="showModal" title="订单详情">
     <div>{{ order }}</div>
-  </NDialog>
+  </NModal>
 </template>
