@@ -12,7 +12,7 @@ import type { TextAuditService } from '../utils/textAudit'
 import { textAuditServices } from '../utils/textAudit'
 import { getCacheApiKeys, getCacheConfig, getOriginConfig } from '../storage/config'
 import { sendResponse } from '../utils'
-import { hasAnyRole, isNotEmptyString } from '../utils/is'
+import { isNotEmptyString } from '../utils/is'
 import type { ChatContext, ChatGPTUnofficialProxyAPIOptions, JWT, ModelConfig } from '../types'
 import { getChatByMessageId } from '../storage/mongo'
 import { ChatGPTAPI, ChatGPTUnofficialProxyAPI } from '../vendor/chatgpt/build/index'
@@ -331,9 +331,11 @@ async function randomKeyConfig(keys: KeyConfig[]): Promise < KeyConfig | null > 
 
 async function getRandomApiKey(user: UserInfo, chatModel: CHATMODEL): Promise<KeyConfig | undefined> {
   const cachedKeys = await getCacheApiKeys()
-  console.log('cached keys', cachedKeys)
-  const keys = (cachedKeys).filter(d => hasAnyRole(d.userRoles, user.roles))
-  return randomKeyConfig(keys.filter(d => d.chatModels.includes(chatModel)))
+  // console.log('cached keys', cachedKeys, user)
+  // aotianlong: 这个地方容易出错，我们直接返回第一个
+  return cachedKeys[0]
+  // const keys = (cachedKeys).filter(d => hasAnyRole(d.userRoles, user.roles))
+  // return randomKeyConfig(keys.filter(d => d.chatModels.includes(chatModel)))
 }
 
 async function releaseApiKey(key: KeyConfig) {
