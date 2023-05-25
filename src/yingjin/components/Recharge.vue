@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import QRCode from 'qrcode'
 import { onBeforeMount, onUnmounted, ref } from 'vue'
-import { useMessage } from 'naive-ui'
+import { NButton, useMessage } from 'naive-ui'
 import { orderDetail, wechatPay } from '@/yingjin/api'
+const succeed = ref(false)
 const selectIndex = ref(10)
 const showUnit = ref(false)
 const model = ref<any>()
@@ -22,6 +23,13 @@ onUnmounted(() => {
   clearTimeout(timer.value)
   timer.value = ''
 })
+
+function handleChargeAgain() {
+  succeed.value = false
+  paying.value = false
+  qrCodeImgUrl.value = null
+  model.value = null
+}
 const selectMoney = (item: number, index: number) => {
   selectIndex.value = index
   model.value = ''
@@ -50,12 +58,9 @@ const loopOrderDetail = async (orderNo: string) => {
   const orderResult = await orderDetail({ orderNo, accessKey })
   console.log('orderResult', orderResult)
   if (orderResult.data.payStatus === 1) {
-    message.success('恭喜您，充值成功。5秒后，自动关闭本页面')
     clearTimeout(timer.value)
     timer.value = ''
-    setTimeout(() => {
-      window.close()
-    }, 5000)
+    succeed.value = true
   }
   else {
     timer.value = setTimeout(() => {
@@ -66,8 +71,18 @@ const loopOrderDetail = async (orderNo: string) => {
 </script>
 
 <template>
-  <div class="recharge">
-    <p class="tip">
+  <div v-if="succeed">
+    <div class="p-4 my-3 text-2xl text-center">
+      充值成功
+    </div>
+    <div class="text-center">
+      <NButton type="primary" @click="handleChargeAgain">
+        再次充值
+      </NButton>
+    </div>
+  </div>
+  <div v-else class="recharge">
+    <p v-if="false" class="tip">
       充值到: {{ userInfo?.mobile }}
     </p>
     <div class="charge-box">
