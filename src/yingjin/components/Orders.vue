@@ -30,7 +30,7 @@ function showDetail(id) {
 }
 
 function loadData() {
-  orderList({ ...params, pageSize: params.pageSize - 1 }).then((res) => {
+  orderList({ ...params, pageNo: params.pageNo - 1 }).then((res) => {
     const { data, msg, code, total: t } = res
     if (code === 11000) {
 		  orders.value = data
