@@ -1,11 +1,22 @@
 <script lang='ts' setup>
-import { onMounted, ref } from 'vue'
-import { NDataTable, useMessage } from 'naive-ui'
+import { reactive, ref, watch } from 'vue'
+import { NDataTable, NDialog, NPagination, useMessage } from 'naive-ui'
 import { orderDetail, orderList } from '@/yingjin/api'
 
 const orders = ref([])
 const order = ref()
 const message = useMessage()
+const total = ref(0)
+const accessKey = localStorage.getItem('accessKey') as string
+
+const params = reactive({
+  accessKey,
+  pageNo: 1,
+  pageSize: 10,
+  payWay: undefined,
+})
+
+watch(params, loadData, { immediate: true })
 
 function showDetail(id) {
   orderDetail({ id }).then((res) => {
@@ -19,19 +30,13 @@ function showDetail(id) {
 }
 
 function loadData() {
-  const accessKey = localStorage.getItem('accessKey') as string
-  const params = {
-    accessKey,
-    pageNo: 0,
-    pageSize: 10,
-    payWay: undefined,
-  }
-  orderList(params).then((res) => {
-    const { data, msg, code, total } = res
-    if (code === 11000)
+  orderList({ ...params, pageSize: params.pageSize - 1 }).then((res) => {
+    const { data, msg, code, total: t } = res
+    if (code === 11000) {
 		  orders.value = data
-    else
-      message.error(msg)
+      total.value = t
+    }
+    else { message.error(msg) }
   })
 }
 
@@ -84,12 +89,21 @@ const payWayHash = {
   1: '手机端',
   2: '电脑端',
 }
-onMounted(loadData)
 </script>
 
 <template>
   <NDataTable :columns="columns" :data="orders" />
-  <NDialog v-model:visible="order" title="订单详情">
+  <div class="my-3 justify-right flex">
+    <NPagination
+      v-model:page="params.pageNo"
+      v-model:pageSize="params.pageSize"
+      :item-count="total"
+      :page-sizes="[10, 20, 30, 40]"
+      show-size-picker
+    />
+  </div>
+
+  <NDialog v-if="!!order" title="订单详情">
     <div>{{ order }}</div>
   </NDialog>
 </template>
