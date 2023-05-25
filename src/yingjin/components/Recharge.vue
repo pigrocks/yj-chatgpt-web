@@ -128,7 +128,7 @@ const loopOrderDetail = async (orderNo: string) => {
 .recharge {
   height: 100vh;
   width: 100%;
-  min-width: 1200px;
+  // min-width: 1200px;
   box-sizing: border-box;
   background: #fff;
   overflow: hidden;

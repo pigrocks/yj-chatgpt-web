@@ -62,6 +62,7 @@ async function handleLogin() {
       await authStore.setToken(data.token)
       userStore.userInfo = { ...userStore.userInfo, name: phone.value }
       localStorage.setItem('accessKey', data.accessKey)
+      localStorage.setItem('accessToken', data.accessToken)
       ms.success(message as string)
       show.value = false
     }
@@ -91,6 +92,7 @@ async function handleRegister() {
       await authStore.setToken(data.token)
       userStore.userInfo = { ...userStore.userInfo, name: phone.value }
       localStorage.setItem('accessKey', data.accessKey)
+      localStorage.setItem('accessToken', data.accessToken)
       ms.success(message as string)
       show.value = false
     }

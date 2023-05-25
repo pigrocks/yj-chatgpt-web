@@ -35,7 +35,7 @@ export async function userRegister(req, res) {
       root: user.roles.includes(UserRole.Admin),
       config: user.config,
     }, config.siteConfig.loginSalt.trim())
-    res.send({ status: 'Success', message: '注册成功 | Register successfully', data: { token, accessKey: dt.accessKey } })
+    res.send({ status: 'Success', message: '注册成功 | Register successfully', data: { token, accessKey: dt.accessKey, accessToken: dt.token } })
   }
   catch (e) {
     res.send({ status: 'Fail', message: e.message, data: null })
@@ -69,7 +69,7 @@ export async function userLogin(req, res) {
       root: user.roles.includes(UserRole.Admin),
       config: user.config,
     }, config.siteConfig.loginSalt.trim())
-    res.send({ status: 'Success', message: '登录成功 | Login successfully', data: { token, accessKey: dt.accessKey } })
+    res.send({ status: 'Success', message: '登录成功 | Login successfully', data: { token, accessKey: dt.accessKey, accessToken: dt.token } })
   }
   catch (error) {
     res.send({ status: 'Fail', message: error.message, data: null })

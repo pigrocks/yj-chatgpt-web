@@ -99,7 +99,7 @@ const show = computed({
           </div>
         </NTabPane>
 
-        <NTabPane name="Account" tab="Account">
+        <NTabPane name="Orders" tab="Orders">
           <template #tab>
             <SvgIcon class="text-lg" icon="ri:bar-chart-box-line" />
             <span class="ml-2">充值记录</span>

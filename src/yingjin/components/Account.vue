@@ -31,10 +31,11 @@ const show = computed({
 })
 
 const getData = () => {
-  const accessKey = localStorage.getItem('accessKey') as string
+  const accessToken = localStorage.getItem('accessToken') as string
   loading.value = true
-  userDoGetInfo({ accessKey }).then((res) => {
+  userDoGetInfo({ accessToken }).then((res) => {
     account.value = res.data as any
+    console.log(account.value, res)
   }).finally(() => {
     loading.value = false
   })
