@@ -12,6 +12,7 @@ const list = [10, 30, 50, 100, 200, 300]
 const timer = ref()
 const paying = ref(false)
 const message = useMessage()
+const accessKey = localStorage.getItem('accessKey') as string
 onBeforeMount(() => {
   const usr = localStorage.getItem('userInfo')
   if (usr)
@@ -37,7 +38,7 @@ const onPay = async () => {
   const money = model.value || list[selectIndex.value]
   paying.value = true
   console.log(money, userInfo)
-  const img = await wechatPay({ accessKey: userInfo.value.accessKey, osType: 1, payAmount: +money })
+  const img = await wechatPay({ accessKey, osType: 1, payAmount: +money })
   QRCode.toDataURL(img.data.data.codeUrl).then((res1: any) => {
     qrCodeImgUrl.value = res1
     setTimeout(() => {
@@ -46,8 +47,9 @@ const onPay = async () => {
   })
 }
 const loopOrderDetail = async (orderNo: string) => {
-  const orderResult = await orderDetail({ orderNo, accessKey: userInfo.value.accessKey })
-  if (orderResult.data.data.payStatus === 1) {
+  const orderResult = await orderDetail({ orderNo, accessKey })
+  console.log('orderResult', orderResult)
+  if (orderResult.data.payStatus === 1) {
     message.success('恭喜您，充值成功。5秒后，自动关闭本页面')
     clearTimeout(timer.value)
     timer.value = ''
@@ -65,28 +67,11 @@ const loopOrderDetail = async (orderNo: string) => {
 
 <template>
   <div class="recharge">
-    <div class="recharge-icon iconfont icon-shandian" />
-    <div class="recharge-count">
-      充值到{{ userInfo?.mobile }}
-    </div>
     <p class="tip">
-      充值到个人账户
+      充值到: {{ userInfo?.mobile }}
     </p>
     <div class="charge-box">
-      <div class="left">
-        <div />
-        <h1 class="mbm">
-          MBM OpenAI GPT 服务
-        </h1>
-        <div class="slogan-logo">
-          <div class="slogan">
-            安全、可靠、企业级
-          </div>
-          <div class="line" />
-          <img class="logo" src="../../assets/images/blue-logo.png" alt="">
-        </div>
-      </div>
-      <div class="right">
+      <div class="right mx-auto">
         <div class="compute" :style="{ 'text-align': paying ? 'center' : 'left' }">
           <span class="d">充值:</span>
           {{ !paying ? '到账按人民币兑美元汇率' : `${model || list[selectIndex]}元人民币` }}
@@ -126,14 +111,11 @@ const loopOrderDetail = async (orderNo: string) => {
   }
 }
 .recharge {
-  height: 100vh;
-  width: 100%;
   // min-width: 1200px;
   box-sizing: border-box;
   background: #fff;
   overflow: hidden;
   margin: 0 auto;
-  padding: 60px 90px 0 55px;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
@@ -153,13 +135,11 @@ const loopOrderDetail = async (orderNo: string) => {
   }
   .recharge-count {
     font-size: 40px;
-    font-family: Gotham-Rounded;
     font-weight: bold;
     color: #161618;
   }
   .tip {
     font-size: 18px;
-    font-family: PingFangTC-Semibold;
     font-weight: 400;
     color: #000000;
     margin-top: 25px;
@@ -318,7 +298,7 @@ const loopOrderDetail = async (orderNo: string) => {
           font-size: 26px;
           height: 45px;
           line-height: 45px;
-          background: url('../../assets/images/wechat-pay-icon.png') center left / contain no-repeat;
+          background: url('@/assets/wechat-pay-icon.png') center left / contain no-repeat;
           padding-left: 55px;
           margin-top: 20px;
         }

@@ -330,7 +330,9 @@ async function randomKeyConfig(keys: KeyConfig[]): Promise < KeyConfig | null > 
 }
 
 async function getRandomApiKey(user: UserInfo, chatModel: CHATMODEL): Promise<KeyConfig | undefined> {
-  const keys = (await getCacheApiKeys()).filter(d => hasAnyRole(d.userRoles, user.roles))
+  const cachedKeys = await getCacheApiKeys()
+  console.log('cached keys', cachedKeys)
+  const keys = (cachedKeys).filter(d => hasAnyRole(d.userRoles, user.roles))
   return randomKeyConfig(keys.filter(d => d.chatModels.includes(chatModel)))
 }
 
