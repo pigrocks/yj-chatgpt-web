@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "deply": "rsync -avz dist/. app@z:apps/chat.yingjin.pro/.",
+    "deploy": "rsync -avz dist/. app@z:apps/chat.yingjin.pro/.",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "build-only": "vite build",
