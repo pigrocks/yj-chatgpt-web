@@ -65,6 +65,8 @@ async function setUser(data: any) {
     accessKey: data.accessKey,
     accessToken: data.accessToken,
     nickname: data.name,
+    mobile: data.mobile,
+    inviteCode: data.inviteCode,
   }
   userStore.recordState()
   localStorage.setItem('accessKey', data.accessKey)
@@ -150,7 +152,7 @@ async function handleRegister() {
           <NTabPane v-if="authStore.session && authStore.session.allowRegister" name="register" :tab="$t('common.register')">
             <NInput v-model:value="name" :maxlength="10" type="text" placeholder="姓名" @keypress="handlePress($event, 'register')" />
             <div class="my-2" />
-            <NInputNumber v-model:value="phone" :max="100000000000" type="text" placeholder="手机号" @keypress="handlePress($event, 'regsiter')" />
+            <NInputNumber v-model:value="phone" :max="100000000000" type="text" placeholder="手机号" :show-button="false" @keypress="handlePress($event, 'regsiter')" />
             <div class="my-2" />
             <SendCode v-model:value="code" :phone="phone" type="register" />
             <div class="my-2" />
