@@ -93,8 +93,9 @@ const columns = [
 ]
 
 const payWayHash = {
-  1: '微信',
-  2: 'H5',
+  1: 'H5',
+  2: 'PC',
+  3: 'WX',
 }
 </script>
 
