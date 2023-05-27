@@ -1,6 +1,6 @@
 <script lang='ts' setup>
-import { h, reactive, ref, watch } from 'vue'
-import { NDataTable, NModal, NPagination, useMessage } from 'naive-ui'
+import { reactive, ref, watch } from 'vue'
+import { NDataTable, NPagination, useMessage } from 'naive-ui'
 import { orderList } from '@/yingjin/api'
 
 const orders = ref([])
@@ -90,24 +90,11 @@ const columns = [
     },
     width: '12%',
   },
-  {
-    title: '操作',
-    key: 'action',
-    render(_, index) {
-      return h('div', [
-        h('a', {
-          onClick: () => showDetail(_),
-          class: 'cursor-pointer',
-        }, '详情'),
-      ])
-    },
-    width: '10%',
-  },
 ]
 
 const payWayHash = {
-  1: '手机端',
-  2: '电脑端',
+  1: '微信',
+  2: 'H5',
 }
 </script>
 
@@ -122,8 +109,4 @@ const payWayHash = {
       show-size-picker
     />
   </div>
-
-  <NModal v-model:show="showModal" title="订单详情">
-    <div>{{ order }}</div>
-  </NModal>
 </template>
