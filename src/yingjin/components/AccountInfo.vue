@@ -15,9 +15,9 @@ const fieldNames = {
 </script>
 
 <template>
-  <div v-for="(key, value) in fieldNames" :key="key" class="flex items-center space-x-4 my-2">
-    <span class="flex-shrink-0 w-[200px]">{{ key }}</span>
-    <div class="flex-1">
+  <div v-for="(key, value) in fieldNames" :key="key" class="flex items-center space-x-4 my-4">
+    <span class="flex-shrink-0 w-[100px]">{{ key }}</span>
+    <div class="flex flex-wrap items-center gap-4">
       {{ account[value] }} <span v-if="value === 'remainAmount'">美元</span>
     </div>
   </div>

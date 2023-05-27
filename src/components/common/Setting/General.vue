@@ -9,6 +9,7 @@ import { getCurrentDate } from '@/utils/functions'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { t } from '@/locales'
 import { fetchClearAllChat } from '@/api'
+import Account from '@/yingjin/components/Account.vue'
 
 const appStore = useAppStore()
 const userStore = useUserStore()
@@ -119,6 +120,8 @@ function handleImportButtonClick(): void {
 
 <template>
   <div class="p-4 space-y-5 min-h-[200px]">
+    <Account />
+
     <div class="space-y-6">
       <div class="flex items-center space-x-4">
         <span class="flex-shrink-0 w-[100px]">{{ $t('setting.name') }}</span>
@@ -200,7 +203,7 @@ function handleImportButtonClick(): void {
           />
         </div>
       </div>
-      <div class="flex items-center space-x-4">
+      <div v-if="false" class="flex items-center space-x-4">
         <span class="flex-shrink-0 w-[100px]">{{ $t('setting.saveUserInfo') }}</span>
         <NButton type="primary" @click="updateUserInfo({ avatar, name, description })">
           {{ $t('common.save') }}
