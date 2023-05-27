@@ -89,7 +89,7 @@ async function handleRegister() {
   try {
     loading.value = true
     const result = await userRegisterAccount({
-      phone: phone.value,
+      phone: String(phone.value),
       code: code.value,
       name: name.value,
     })
@@ -139,9 +139,9 @@ async function handleRegister() {
           </NTabPane>
 
           <NTabPane v-if="authStore.session && authStore.session.allowRegister" name="register" :tab="$t('common.register')">
-            <NInput v-model:value="name" type="text" placeholder="姓名" @keypress="handlePress($event, 'register')" />
+            <NInput v-model:value="name" :maxlength="10" type="text" placeholder="姓名" @keypress="handlePress($event, 'register')" />
             <div class="my-2" />
-            <NInput v-model:value="phone" type="text" placeholder="手机号" @keypress="handlePress($event, 'regsiter')" />
+            <NInputNumber v-model:value="phone" :max="100000000000" type="text" placeholder="手机号" @keypress="handlePress($event, 'regsiter')" />
             <div class="my-2" />
             <SendCode v-model:value="code" :phone="phone" type="register" />
             <div class="my-2" />
