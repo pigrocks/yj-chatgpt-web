@@ -602,13 +602,6 @@ onUnmounted(() => {
       @export="handleExport" @toggle-using-context="handleToggleUsingContext"
       @toggle-show-prompt="showPrompt = true"
     />
-    <div class="p-2 flex">
-      <div class="w-[40px]">
-        <img src="/logo.jpg" class="w-full">
-      </div>
-      <div class="flex" />
-    </div>
-
     <main class="flex-1 overflow-hidden">
       <div id="scrollRef" ref="scrollRef" class="h-full overflow-hidden overflow-y-auto" @scroll="handleScroll">
         <div
