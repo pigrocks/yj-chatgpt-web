@@ -41,9 +41,14 @@ onMounted(async () => {
       </template>
     </div>
     <div class="flex-1 min-w-0 ml-2">
-      <h2 v-if="userInfo.name" class="overflow-hidden font-bold text-md text-ellipsis whitespace-nowrap">
-        {{ userInfo.name }}
-      </h2>
+      <div v-if="userInfo.name" class="overflow-hidden text-ellipsis whitespace-nowrap flex flex-col">
+        <div class="font-bold text-md">
+          {{ userInfo.name }}
+        </div>
+        <div>
+          {{ userInfo.nickname }}
+        </div>
+      </div>
       <NButton
         v-else tag="a" text
         @click="showPermission = true"

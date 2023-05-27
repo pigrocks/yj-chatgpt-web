@@ -56,6 +56,21 @@ function handlePress(event: KeyboardEvent, type: string) {
   }
 }
 
+async function setUser(data: any) {
+  console.log('set User', data)
+  await authStore.setToken(data.token)
+  userStore.userInfo = {
+    ...userStore.userInfo,
+    name: String(phone.value),
+    accessKey: data.accessKey,
+    accessToken: data.accessToken,
+    nickname: data.name,
+  }
+  userStore.recordState()
+  localStorage.setItem('accessKey', data.accessKey)
+  localStorage.setItem('accessToken', data.accessToken)
+}
+
 async function handleLogin() {
   try {
     loading.value = true
@@ -66,10 +81,7 @@ async function handleLogin() {
     const { data, message, status } = result
     globalThis.console.log('login ok', result)
     if (status === 'Success') {
-      await authStore.setToken(data.token)
-      userStore.userInfo = { ...userStore.userInfo, name: phone.value }
-      localStorage.setItem('accessKey', data.accessKey)
-      localStorage.setItem('accessToken', data.accessToken)
+      setUser(data)
       ms.success(message as string)
       show.value = false
     }
@@ -96,10 +108,7 @@ async function handleRegister() {
     console.log(result)
     const { data, message, status } = result
     if (status === 'Success') {
-      await authStore.setToken(data.token)
-      userStore.userInfo = { ...userStore.userInfo, name: phone.value }
-      localStorage.setItem('accessKey', data.accessKey)
-      localStorage.setItem('accessToken', data.accessToken)
+      setUser(data)
       ms.success(message as string)
       show.value = false
     }

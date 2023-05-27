@@ -5,7 +5,7 @@ import { userDoRegisterCode, userDoSendCode } from '@/yingjin/api'
 
 const props = defineProps({
   phone: {
-    type: String,
+    type: [String, Number],
     required: true,
   },
   type: {
@@ -32,7 +32,7 @@ const error = ref(null)
 function doSendCode() {
   sending.value = true
   const api = (props.type === 'register' ? userDoRegisterCode : userDoSendCode)
-  api({ phone: props.phone }).then((res) => {
+  api({ phone: String(props.phone) }).then((res) => {
     const { data: { code, msg } } = res
     if (code !== 11000) {
       ms.error(msg)
