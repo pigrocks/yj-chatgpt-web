@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { computed, ref } from 'vue'
-import { NButton, NInput, NModal, NTabPane, NTabs, useMessage } from 'naive-ui'
+import { NButton, NInput, NInputNumber, NModal, NTabPane, NTabs, useMessage } from 'naive-ui'
 import { useRouter } from 'vue-router'
 import { useAuthStore, useUserStore } from '@/store'
 import SendCode from '@/yingjin/components/SendCode.vue'
@@ -31,11 +31,18 @@ const userStore = useUserStore()
 const ms = useMessage()
 
 const loading = ref(false)
-const phone = ref('')
+const phone = ref<number>()
 const code = ref('')
 const name = ref('')
 
-const disabled = computed(() => !code.value.trim() || !phone.value.trim() || loading.value)
+const limitInputLength = () => {
+  // 检查输入长度并限制最大长度为 11
+  const sPhone = String(phone.value)
+  if (sPhone.length > 11)
+    phone.value = Number(sPhone.slice(0, 11))
+}
+
+const disabled = computed(() => !code.value || !phone.value || loading.value)
 
 const activeTab = ref('login')
 
@@ -53,7 +60,7 @@ async function handleLogin() {
   try {
     loading.value = true
     const result = await userDoLogin({
-      phone: phone.value,
+      phone: String(phone.value),
       code: code.value,
     })
     const { data, message, status } = result
@@ -122,9 +129,9 @@ async function handleRegister() {
         <!-- Add Tabs -->
         <NTabs v-model:value="activeTab" type="line">
           <NTabPane name="login" :tab="$t('common.login')">
-            <NInput v-model:value="phone" placeholder="手机号" type="text" :max-length="11" @keypress="handlePress($event, 'login')" />
+            <NInputNumber v-model:value="phone" :show-button="false" :max="100000000000" :maxlength="11" placeholder="手机号" type="text" @keypress="handlePress($event, 'login')" />
             <div class="my-2" />
-            <SendCode v-model:value="code" :phone="phone" type="login" />
+            <SendCode v-model:value="code" :phone="phone" type="login" :maxlength="4" />
             <div class="my-2" />
             <NButton block type="primary" :disabled="disabled" :loading="loading" @click="handleLogin">
               登录

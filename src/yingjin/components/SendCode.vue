@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import { NButton, NInput, NInputGroup, useMessage } from 'naive-ui'
+import { NButton, NInputGroup, NInputNumber, useMessage } from 'naive-ui'
 import { userDoRegisterCode, userDoSendCode } from '@/yingjin/api'
 
 const props = defineProps({
@@ -15,7 +15,7 @@ const props = defineProps({
 })
 const emit = defineEmits(['update:value'])
 const ms = useMessage()
-const code = ref('')
+const code = ref()
 const countDown = ref(0)
 const startCountDown = () => {
   countDown.value = 60
@@ -57,7 +57,7 @@ watch(code, () => {
 
 <template>
   <NInputGroup>
-    <NInput v-model:value="code" placeholder="验证码" />
+    <NInputNumber v-model:value="code" :max="9999" placeholder="验证码" :show-button="false" v-bind="$attrs" />
     <NButton :loading="sending" :disabled="!!countDown || sending" type="primary" @click="doSendCode">
       <span v-if="!countDown">发送</span>
       <span v-else>{{ countDown }}</span>
