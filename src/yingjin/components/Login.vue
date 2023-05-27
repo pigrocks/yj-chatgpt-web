@@ -31,22 +31,20 @@ const userStore = useUserStore()
 const ms = useMessage()
 
 const loading = ref(false)
-const phone = ref<number>()
+const phone = ref<string>()
 const code = ref('')
 const name = ref('')
-
-const limitInputLength = () => {
-  // 检查输入长度并限制最大长度为 11
-  const sPhone = String(phone.value)
-  if (sPhone.length > 11)
-    phone.value = Number(sPhone.slice(0, 11))
-}
 
 const disabled = computed(() => !code.value || !phone.value || loading.value)
 
 const activeTab = ref('login')
 
 function handlePress(event: KeyboardEvent, type: string) {
+  console.log(event)
+  if (!['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(event.key)) {
+    event.preventDefault()
+    return
+  }
   if (event.key === 'Enter' && !event.shiftKey) {
     event.preventDefault()
     if (type === 'login')
@@ -140,7 +138,7 @@ async function handleRegister() {
         <!-- Add Tabs -->
         <NTabs v-model:value="activeTab" type="line">
           <NTabPane name="login" :tab="$t('common.login')">
-            <NInputNumber v-model:value="phone" :show-button="false" :max="100000000000" :maxlength="11" placeholder="手机号" type="text" @keypress="handlePress($event, 'login')" />
+            <NInput v-model:value="phone" :show-button="false" :maxlength="11" placeholder="手机号" type="text" @keypress="handlePress($event, 'login')" />
             <div class="my-2" />
             <SendCode v-model:value="code" :phone="phone" type="login" :maxlength="4" />
             <div class="my-2" />

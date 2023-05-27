@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import { NButton, NInputGroup, NInputNumber, useMessage } from 'naive-ui'
+import { NButton, NInput, NInputGroup, useMessage } from 'naive-ui'
 import { userDoRegisterCode, userDoSendCode } from '@/yingjin/api'
 
 const props = defineProps({
   phone: {
-    type: [String, Number],
-    required: true,
+    type: String,
   },
   type: {
     type: String,
@@ -28,6 +27,11 @@ const startCountDown = () => {
 const sending = ref(false)
 
 const error = ref(null)
+
+function handlePress(event) {
+  if (!['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(event.key))
+    event.preventDefault()
+}
 
 function doSendCode() {
   sending.value = true
@@ -57,7 +61,7 @@ watch(code, () => {
 
 <template>
   <NInputGroup>
-    <NInputNumber v-model:value="code" :max="9999" placeholder="验证码" :show-button="false" v-bind="$attrs" />
+    <NInput v-model:value="code" :maxlength="4" placeholder="验证码" :show-button="false" v-bind="$attrs" @keypress="handlePress" />
     <NButton :loading="sending" :disabled="!!countDown || sending" type="primary" @click="doSendCode">
       <span v-if="!countDown">发送</span>
       <span v-else>{{ countDown }}</span>
