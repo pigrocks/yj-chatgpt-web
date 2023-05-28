@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { NButton, NInput, NPopconfirm, NSelect, useMessage } from 'naive-ui'
+import { NButton, NPopconfirm, NSelect, useMessage } from 'naive-ui'
 import type { Language, Theme } from '@/store/modules/app/helper'
 import { SvgIcon } from '@/components/common'
 import { useAppStore, useUserStore } from '@/store'
@@ -123,6 +123,7 @@ function handleImportButtonClick(): void {
     <Account />
 
     <div class="space-y-6">
+      <!--
       <div class="flex items-center space-x-4">
         <span class="flex-shrink-0 w-[100px]">{{ $t('setting.name') }}</span>
         <div class="w-[200px]">
@@ -141,6 +142,7 @@ function handleImportButtonClick(): void {
           <NInput v-model:value="avatar" placeholder="" />
         </div>
       </div>
+			-->
       <div
         class="flex items-center space-x-4"
         :class="isMobile && 'items-start'"

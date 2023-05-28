@@ -144,17 +144,14 @@ const loopOrderDetail = async (orderNo: string) => {
   }
   .recharge-icon {
     color: #447eea;
-    font-size: 60px;
     height: 61px;
     line-height: 61px;
   }
   .recharge-count {
-    font-size: 40px;
     font-weight: bold;
     color: #161618;
   }
   .tip {
-    font-size: 18px;
     font-weight: 400;
     color: #000000;
     margin-top: 25px;
@@ -181,7 +178,6 @@ const loopOrderDetail = async (orderNo: string) => {
       box-sizing: border-box;
 
       .mbm {
-        font-size: 58px;
         font-family: FUTURA-MEDIUM;
         line-height: 102px;
         color: #221815;
@@ -195,7 +191,6 @@ const loopOrderDetail = async (orderNo: string) => {
         flex-wrap: wrap;
         .slogan {
           height: 36px;
-          font-size: 20px;
           font-family: FUTURA-MEDIUM;
           font-weight: bold;
           color: #000000;
@@ -216,7 +211,6 @@ const loopOrderDetail = async (orderNo: string) => {
       width: 345px;
       .compute {
         width: 100%;
-        font-size: 24px;
         font-family: Futura;
         font-weight: bold;
         color: #737379;
@@ -243,7 +237,6 @@ const loopOrderDetail = async (orderNo: string) => {
           align-items: center;
           flex-wrap: wrap;
           margin-top: 16px;
-          font-size: 22px;
           font-family: FUTURA-MEDIUM;
           font-weight: 500;
           color: #000000;
@@ -255,7 +248,6 @@ const loopOrderDetail = async (orderNo: string) => {
           background: none;
         }
         .ipt-money {
-          font-size: 28px;
           font-family: FUTURA-MEDIUM;
           font-weight: 500;
           color: #000000;
@@ -277,7 +269,6 @@ const loopOrderDetail = async (orderNo: string) => {
             width: 100%;
             background: transparent;
             text-align: center;
-            font-size: 22px;
             padding: 0 20px;
             box-sizing: border-box;
             &::placeholder {
@@ -310,7 +301,6 @@ const loopOrderDetail = async (orderNo: string) => {
           margin-top: 40px;
         }
         .icon-weChat {
-          font-size: 26px;
           height: 45px;
           line-height: 45px;
           background: url('@/assets/wechat-pay-icon.png') center left / contain no-repeat;
@@ -322,7 +312,6 @@ const loopOrderDetail = async (orderNo: string) => {
           height: 70px;
           line-height: 70px;
           border: 1px solid #000;
-          font-size: 24px;
           font-family: FUTURA-MEDIUM;
           font-weight: 500;
           color: rgba(0, 0, 0, 0.95);
@@ -347,7 +336,6 @@ const loopOrderDetail = async (orderNo: string) => {
       .right {
         width: 300px;
         .compute {
-          font-size: 21px;
         }
         .weChat-pay-code {
           .code {

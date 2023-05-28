@@ -100,7 +100,7 @@ const payWayHash = {
 </script>
 
 <template>
-  <NDataTable :columns="columns" :data="orders" />
+  <NDataTable :columns="columns" :data="orders" :scroll-x="800" />
   <div class="my-3 justify-right flex">
     <NPagination
       v-model:page="params.pageNo"
