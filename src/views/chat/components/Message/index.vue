@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { computed, ref } from 'vue'
-import { NButton, NButtonGroup, NDropdown, NPopover, NSpace, useMessage } from 'naive-ui'
+import { NButton, NButtonGroup, NDropdown, NSpace, useMessage } from 'naive-ui'
 import AvatarComponent from './Avatar.vue'
 import TextComponent from './Text.vue'
 import { SvgIcon } from '@/components/common'
@@ -147,6 +147,7 @@ async function handlePreviousResponse(next: number) {
               <svg stroke="currentColor" fill="none" stroke-width="1.5" viewBox="-5 -5 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-3 w-3" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polyline points="9 18 15 12 9 6" /></svg>
             </NButton>
           </NButtonGroup>
+          <!--
           <template v-if="usage">
             <NPopover trigger="hover">
               <template #trigger>
@@ -166,6 +167,7 @@ async function handlePreviousResponse(next: number) {
               </span>
             </NPopover>
           </template>
+				  -->
         </NSpace>
       </p>
       <div
