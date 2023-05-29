@@ -4,8 +4,18 @@ import { getCacheConfig } from '../../storage/config'
 import { UserRole } from '../../storage/model'
 import { createUserByPhone, getUserByPhone } from '../../storage/mongo'
 
-
 export const CHATMODELS = ['gpt-3.5-turbo', 'gpt-4', 'gpt-4-32k']
+
+// 我们使用固定的模型
+export const chatModels = [
+  {
+    label: 'gpt-3.5-turbo',
+    key: 'gpt-3.5-turbo',
+    value: 'gpt-3.5-turbo',
+  },
+  { label: 'gpt-4', key: 'gpt-4', value: 'gpt-4' },
+  { label: 'gpt-4-32k', key: 'gpt-4-32k', value: 'gpt-4-32k' },
+]
 
 export async function userRegister(req, res) {
   const { phone, code, name } = req.body as { name; phone: string; code: string }
