@@ -73,5 +73,5 @@ export function chatCompletions(params) {
 */
 
 export function listBill(params: { accessKey: string; STime: string; ETime: string }) {
-  return get('/bill/list', { params })
+  return get('/listBill', { params })
 }

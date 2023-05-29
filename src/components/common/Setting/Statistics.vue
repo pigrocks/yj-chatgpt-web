@@ -8,6 +8,8 @@ import dayjs from 'dayjs'
 import { t } from '@/locales'
 import { fetchUserStatistics } from '@/api'
 import { SvgIcon } from '@/components/common'
+import { listBill } from '@/yingjin/api'
+import { useUserStore } from '@/store'
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
@@ -62,6 +64,30 @@ rangeShortcuts[t('setting.statisticsPeriodLast30Days')] = [
 
 const showChart = ref(true)
 
+async function fetchYjStatistics() {
+  const userStore = useUserStore()
+  const accessKey = userStore.userInfo.accessKey
+  const STime = dayjs(range.value[0]).format('YYYY-MM-DD')
+  const ETime = dayjs(range.value[1]).format('YYYY-MM-DD')
+  listBill({ STime, ETime, accessKey }).then((data: any) => {
+    if (Object.keys(data.chartData).length) {
+      summary.value.promptTokens = data.promptTokens
+      summary.value.completionTokens = data.completionTokens
+      summary.value.totalTokens = data.totalTokens
+
+      chartData.labels = data.chartData.map((item: any) => item._id)
+      chartData.datasets[0].data = data.chartData.map((item: any) => item.promptTokens)
+      chartData.datasets[1].data = data.chartData.map((item: any) => item.completionTokens)
+
+      // todo: don't know why data change won't trigger chart re-render, dirty hack
+      showChart.value = false
+      nextTick(() => {
+        showChart.value = true
+      })
+    }
+  })
+}
+
 async function fetchStatistics() {
   try {
     loading.value = true
@@ -92,7 +118,8 @@ async function fetchStatistics() {
 }
 
 onMounted(() => {
-  fetchStatistics()
+  // fetchStatistics()
+  fetchYjStatistics()
 })
 </script>
 
