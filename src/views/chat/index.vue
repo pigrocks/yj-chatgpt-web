@@ -31,6 +31,7 @@ const ms = useMessage()
 const authStore = useAuthStore()
 const userStore = useUserStore()
 const chatStore = useChatStore()
+window.chatStore = chatStore
 
 const { isMobile } = useBasicLayout()
 const { addChat, updateChat, updateChatSome, getChatByUuidAndIndex } = useChat()

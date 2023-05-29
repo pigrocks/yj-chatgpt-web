@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue'
 import { NButton, NInput, NInputNumber, NModal, NTabPane, NTabs, useMessage } from 'naive-ui'
 import { useRouter } from 'vue-router'
-import { useAuthStore, useUserStore } from '@/store'
+import { useAuthStore, useChatStore, useUserStore } from '@/store'
 import SendCode from '@/yingjin/components/SendCode.vue'
 // import { userDoLogin, userRegisterAccount } from '@/yingjin/api'
 import { fetchUserLogin as userDoLogin, fetchUserRegister as userRegisterAccount } from '@/api'
@@ -27,6 +27,7 @@ const show = computed({
 const router = useRouter()
 const authStore = useAuthStore()
 const userStore = useUserStore()
+const chatStore = useChatStore()
 
 const ms = useMessage()
 
@@ -70,6 +71,10 @@ async function setUser(data: any) {
   userStore.recordState()
   localStorage.setItem('accessKey', data.accessKey)
   localStorage.setItem('accessToken', data.accessToken)
+  // 获取chat history
+  chatStore.syncHistory(() => {
+    console.log('get history')
+  })
 }
 
 async function handleLogin() {
