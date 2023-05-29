@@ -156,11 +156,12 @@ export async function getApiKeys() {
       key.userRoles.push(UserRole.User)
       key.userRoles.push(UserRole.Guest)
     }
-    if (key.chatModels == null || key.chatModels.length <= 0) {
+    //if (key.chatModels == null || key.chatModels.length <= 0) {
+      key.chatModels ??= []
       CHATMODELS.forEach((chatModel) => {
         key.chatModels.push(chatModel)
       })
-    }
+    //}
   })
   return result
 }
