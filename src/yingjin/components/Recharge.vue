@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import QRCode from 'qrcode'
-import { onBeforeMount, onUnmounted, ref } from 'vue'
+import { computed, onBeforeMount, onUnmounted, ref } from 'vue'
 import { NButton, useMessage } from 'naive-ui'
 import { orderDetail, wechatPay } from '@/yingjin/api'
+import { useUserStore } from '@/store'
 const succeed = ref(false)
 const selectIndex = ref(10)
 const showUnit = ref(false)
@@ -14,6 +15,12 @@ const timer = ref()
 const paying = ref(false)
 const message = useMessage()
 const accessKey = localStorage.getItem('accessKey') as string
+
+const isWeixin = computed(() => {
+  const ua = navigator.userAgent.toLowerCase()
+  return ua.includes('micromessenger')
+})
+
 onBeforeMount(() => {
   const usr = localStorage.getItem('userInfo')
   if (usr)
@@ -42,7 +49,8 @@ const input = () => {
 const showYuan = (flag: boolean) => {
   showUnit.value = flag
 }
-const onPay = async () => {
+
+const h5Pay = async () => {
   const money = model.value || list[selectIndex.value]
   paying.value = true
   console.log(money, userInfo)
@@ -54,6 +62,26 @@ const onPay = async () => {
     }, 3000)
   })
 }
+
+const wxPay = async () => {
+  const money = model.value || list[selectIndex.value]
+  const userStore = useUserStore()
+  const userId = userStore.userInfo?.id
+  const state = `${userId}-${money}`
+  let url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3ea8d7dd10dc5be1'
+  url += `&redirect_uri=https%3A%2F%2Fyopenai.yingjin.pro%2Fv1%2FgetOpenid&response_type=code&scope=snsapi_base&state=${state}`
+  window.location.href = url
+}
+
+const onPay = async () => {
+  if (isWeixin.value)
+    wxPay()
+
+  else
+    h5Pay()
+    // wxPay()
+}
+
 const loopOrderDetail = async (orderNo: string) => {
   const orderResult = await orderDetail({ orderNo, accessKey })
   console.log('orderResult', orderResult)

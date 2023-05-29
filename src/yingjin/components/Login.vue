@@ -65,6 +65,7 @@ async function setUser(data: any) {
     nickname: data.name,
     mobile: data.mobile,
     inviteCode: data.inviteCode,
+    id: data.id,
   }
   userStore.recordState()
   localStorage.setItem('accessKey', data.accessKey)

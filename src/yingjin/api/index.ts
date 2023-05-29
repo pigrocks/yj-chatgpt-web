@@ -61,3 +61,17 @@ export function userRegisterAccount(params: { phone: string; code: string; name:
 export function chatCompletions(params) {
   return post('/chat/completions', params)
 }
+
+/*
+ "data": [
+    {
+      "completionTokens": 0,
+      "createDate": "string",
+      "promptTokens": 0,
+      "totalTokens": 0
+    }
+*/
+
+export function listBill(params: { accessKey: string; STime: string; ETime: string }) {
+  return get('/bill/list', { params })
+}
