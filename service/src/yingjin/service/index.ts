@@ -4,6 +4,9 @@ import { getCacheConfig } from '../../storage/config'
 import { UserRole } from '../../storage/model'
 import { createUserByPhone, getUserByPhone } from '../../storage/mongo'
 
+
+export const CHATMODELS = ['gpt-3.5-turbo', 'gpt-4', 'gpt-4-32k']
+
 export async function userRegister(req, res) {
   const { phone, code, name } = req.body as { name; phone: string; code: string }
   const isRoot = phone.toLowerCase() === process.env.ROOT_USER
