@@ -67,9 +67,11 @@ const showChart = ref(true)
 async function fetchYjStatistics() {
   const userStore = useUserStore()
   const accessKey = userStore.userInfo.accessKey
-  const STime = dayjs(range.value[0]).format('YYYY-MM-DD')
-  const ETime = dayjs(range.value[1]).format('YYYY-MM-DD')
-  listBill({ STime, ETime, accessKey }).then((data: any) => {
+  const STime = dayjs(range.value[0]).format('YYYY-MM-DD 00:00:00')
+  const ETime = dayjs(range.value[1]).format('YYYY-MM-DD 00:00:00')
+  listBill({ STime, ETime, accessKey }).then((response: any) => {
+    const { data } = response
+    data.chartData = data.chatData
     if (Object.keys(data.chartData).length) {
       summary.value.promptTokens = data.promptTokens
       summary.value.completionTokens = data.completionTokens
@@ -134,7 +136,7 @@ onMounted(() => {
               v-model:value="range"
               type="daterange"
               :shortcuts="rangeShortcuts"
-              @update:value="fetchStatistics"
+              @update:value="fetchYjStatistics"
             />
           </div>
         </div>
