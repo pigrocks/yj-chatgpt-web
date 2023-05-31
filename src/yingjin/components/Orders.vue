@@ -93,8 +93,8 @@ const columns = [
 ]
 
 const payWayHash = {
-  1: 'H5',
-  2: 'PC',
+  1: 'PC',
+  2: 'H5',
   3: 'WX',
 }
 </script>
