@@ -137,7 +137,7 @@ async function handleRegister() {
       <div class="space-y-4">
         <header class="space-y-2">
           <h2 class="text-2xl font-bold text-center text-slate-800 dark:text-neutral-200">
-            {{ $t('common.notLoggedIn') }}
+		  登录
           </h2>
         </header>
 
