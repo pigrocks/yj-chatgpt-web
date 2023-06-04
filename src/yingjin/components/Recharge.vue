@@ -23,7 +23,6 @@ const isWeixin = computed(() => {
 
 const isMobile = computed(() => {
   const ua = navigator.userAgent.toLowerCase()
-  console.log(ua)
   return /Mobi|Android|iPhone/i.test(ua)
 })
 
@@ -69,6 +68,15 @@ const h5Pay = async () => {
   })
 }
 
+const mobileH5Pay = async () => {
+  const money = model.value || list[selectIndex.value]
+  paying.value = true
+  console.log(money, userInfo)
+  const img = await wechatPay({ accessKey, osType: 2, payAmount: +money })
+  const url = img.data.data.h5Url
+  window.location.href = url
+}
+
 const wxPay = async () => {
   const money = model.value || list[selectIndex.value]
   const userStore = useUserStore()
@@ -80,12 +88,14 @@ const wxPay = async () => {
 }
 
 const onPay = async () => {
-  if (isWeixin.value || isMobile.value)
-    wxPay()
-
-  else
-    h5Pay()
-    // wxPay()
+  if (isWeixin.value || isMobile.value) {
+    if (isWeixin.value)
+      wxPay()
+		 else
+      mobileH5Pay()
+  }
+  else { h5Pay() }
+  // wxPay()
 }
 
 const loopOrderDetail = async (orderNo: string) => {
