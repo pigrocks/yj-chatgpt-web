@@ -21,6 +21,12 @@ const isWeixin = computed(() => {
   return ua.includes('micromessenger')
 })
 
+const isMobile = computed(() => {
+  const ua = navigator.userAgent.toLowerCase()
+  console.log(ua)
+  return /Mobi|Android|iPhone/i.test(ua)
+})
+
 onBeforeMount(() => {
   const usr = localStorage.getItem('userInfo')
   if (usr)
@@ -74,7 +80,7 @@ const wxPay = async () => {
 }
 
 const onPay = async () => {
-  if (isWeixin.value)
+  if (isWeixin.value || isMobile.value)
     wxPay()
 
   else

@@ -17,7 +17,16 @@ import { SvgIcon } from '@/components/common'
 import { useAuthStore, useUserStore } from '@/store'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
 
-const props = defineProps<Props>()
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    default: false,
+  },
+  tab: {
+    type: String,
+    default: 'General',
+  },
+})
 
 const emit = defineEmits<Emit>()
 
@@ -27,15 +36,11 @@ const { isMobile } = useBasicLayout()
 
 const isChatGPTAPI = computed<boolean>(() => !!authStore.isChatGPTAPI)
 
-interface Props {
-  visible: boolean
-}
-
 interface Emit {
   (e: 'update:visible', visible: boolean): void
 }
 
-const active = ref('General')
+const active = ref(props.tab)
 
 const show = computed({
   get() {
@@ -60,22 +65,13 @@ const show = computed({
             <General />
           </div>
         </NTabPane>
-        <NTabPane v-if="isChatGPTAPI" name="Advanced" tab="Advanced">
-          <template #tab>
-            <SvgIcon class="text-lg" icon="ri:equalizer-line" />
-            <span class="ml-2">{{ $t('setting.advanced') }}</span>
-          </template>
-          <div class="min-h-[100px]">
-            <Advanced />
-          </div>
-        </NTabPane>
-        <NTabPane name="Statistics" tab="Statistics">
+        <NTabPane v-if="false" name="Account" tab="Account">
           <template #tab>
             <SvgIcon class="text-lg" icon="ri:bar-chart-box-line" />
-            <span class="ml-2">{{ $t('setting.statistics') }}</span>
+            <span class="ml-2">账户信息</span>
           </template>
           <div class="min-h-[100px]">
-            <Statistics />
+            <Account />
           </div>
         </NTabPane>
 
@@ -89,16 +85,6 @@ const show = computed({
           </div>
         </NTabPane>
 
-        <NTabPane v-if="false" name="Account" tab="Account">
-          <template #tab>
-            <SvgIcon class="text-lg" icon="ri:bar-chart-box-line" />
-            <span class="ml-2">账户信息</span>
-          </template>
-          <div class="min-h-[100px]">
-            <Account />
-          </div>
-        </NTabPane>
-
         <NTabPane name="Orders" tab="Orders">
           <template #tab>
             <SvgIcon class="text-lg" icon="ri:bar-chart-box-line" />
@@ -106,6 +92,16 @@ const show = computed({
           </template>
           <div class="min-h-[100px]">
             <Orders />
+          </div>
+        </NTabPane>
+
+        <NTabPane name="Statistics" tab="Statistics">
+          <template #tab>
+            <SvgIcon class="text-lg" icon="ri:bar-chart-box-line" />
+            <span class="ml-2">{{ $t('setting.statistics') }}</span>
+          </template>
+          <div class="min-h-[100px]">
+            <Statistics />
           </div>
         </NTabPane>
 
@@ -150,6 +146,15 @@ const show = computed({
             <span class="ml-2">{{ $t('setting.keysConfig') }}</span>
           </template>
           <Key />
+        </NTabPane>
+        <NTabPane v-if="isChatGPTAPI" name="Advanced" tab="Advanced">
+          <template #tab>
+            <SvgIcon class="text-lg" icon="ri:equalizer-line" />
+            <span class="ml-2">{{ $t('setting.advanced') }}</span>
+          </template>
+          <div class="min-h-[100px]">
+            <Advanced />
+          </div>
         </NTabPane>
       </NTabs>
     </div>
