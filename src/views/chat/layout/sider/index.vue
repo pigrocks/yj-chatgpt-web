@@ -82,12 +82,12 @@ watch(
         <div class="flex-1 min-h-0 pb-4 overflow-hidden">
           <List />
         </div>
-        <div class="px-4">
+        <div class="px-4" v-if="authStore.token">
           <NButton block @click="showSetting = true">
             充值
           </NButton>
         </div>
-        <div class="p-4">
+        <div class="p-4" v-if="authStore.token">
           <NButton block @click="show = true">
             {{ $t('store.siderButton') }}
           </NButton>
